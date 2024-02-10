@@ -1,5 +1,5 @@
 <script>
-    import PageInscription from "./page_inscription.svelte";
+    import FormLoginOrRegister from "./formLoginOrRegister.svelte";
 
     function isConnected() {
 		return false;
@@ -9,5 +9,5 @@
 {#if isConnected()}
 <p>Condition is true</p>
 {:else}
-    <PageInscription />
+    <FormLoginOrRegister />
 {/if}

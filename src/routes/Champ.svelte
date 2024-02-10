@@ -1,10 +1,9 @@
 <script>
-    import { sha256 } from 'js-sha256';
-
     export let type = 'text';
     export let label = undefined;
     export let value = undefined;
-    export let errors = undefined;
+    export let erreur = undefined;
+    let labelDev = label.replaceAll(" ", "_").toLowerCase();
 
     let pos_div = "start";
     if (type == "submit") {
@@ -29,16 +28,14 @@
 
 <div class="text-{pos_div} mt-1">
     {#if type == "checkbox"}
-        <label for={label}>{label} :</label>
-        <input id="input_{label}" name="{label}" type="checkbox" bind:checked={value}>
-    {:else if type == "password"}
-        <input id="input_{label}" name="{label}" use:typeInput on:change={() => value = sha256(value)} placeholder="{label}" required>
+        <label for={labelDev}>{label} :</label>
+        <input id="input_{labelDev}" name="{labelDev}" type="checkbox" bind:checked={value}>
     {:else}
-        <input id="input_{label}" name="{label}" use:typeInput bind:value placeholder="{label}" required>
+        <input id="input_{labelDev}" name="{labelDev}" use:typeInput bind:value placeholder="{label}" required>
     {/if}
 
 
-    {#if errors}
-        <span id="errors_{label}" class="text-danger">{errors}</span>
+    {#if erreur}
+        <span id="errors_{labelDev}" class="text-danger">{erreur}</span>
     {/if}
 </div>
