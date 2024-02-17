@@ -1,16 +1,13 @@
 <script>
-    import Button from "@smui/button";
-    import AccueilAdmin from "./accueilAdmin.svelte";
+    import FormLoginOrRegister from "./formLoginOrRegister.svelte";
+
+    function isConnected() {
+		return false;
+	}
 </script>
 
-<header class="header">
-    %sveltekit.head%
-</header>
-
-<AccueilAdmin/>
-
-<style>
-    .header {
-        background-color: black;
-    }
-</style>
+{#if isConnected()}
+<p>Condition is true</p>
+{:else}
+    <FormLoginOrRegister />
+{/if}
