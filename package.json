@@ -1,5 +1,5 @@
 {
-	"name": "reuse",
+	"name": "mini-proj-svelte",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -16,11 +16,12 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"smui-theme": "^7.0.0-beta.16",
-		"svelte": "^4.2.7",
 		"vite": "^5.0.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"@jill64/svelte-storage": "^1.1.7"
+		"@jill64/svelte-storage": "^1.1.7",
+		"bootstrap": "^5.3.2",
+		"js-sha256": "^0.11.0"
 	}
 }
