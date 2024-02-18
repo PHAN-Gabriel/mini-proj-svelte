@@ -1,13 +1,20 @@
 <script>
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    
+    import { estConnecte, getUserConnecte } from '$lib/Users.js';
+
     import FormLoginOrRegister from "./formLoginOrRegister.svelte";
 
-    function isConnected() {
-		return false;
-	}
+    onMount(() => {
+        if (estConnecte()) {
+            let redirectTo = '/acheterArticles';
+            if (getUserConnecte().estCommercant) {
+            redirectTo = '/gestionArticles';
+            }
+            goto(redirectTo);
+        }
+    });
 </script>
 
-{#if isConnected()}
-<p>Condition is true</p>
-{:else}
-    <FormLoginOrRegister />
-{/if}
+<FormLoginOrRegister />

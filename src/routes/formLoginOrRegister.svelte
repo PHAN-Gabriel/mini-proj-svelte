@@ -1,8 +1,8 @@
 <script>
     import { sha256 } from 'js-sha256';
     import Champ from './Champ.svelte';
+    import { getUsers, getIdUserByPseudo } from '$lib/Users.js';
 
-    export let estConnecte = false; 
     let estFormConnexion = true;
     let inscription = { nom : "", prenom : "", pseudo : "", mdp : "", estCommercant : false };
     let mdpConfirm = "";
@@ -12,24 +12,13 @@
     let mdpErreur = "";
     let mdpConfirmErreur = "";
 
-    function toggleEstFormConnexion() {
-        estFormConnexion = !estFormConnexion;
+    function clearInputInscription() {
+        inscription = { nom : "", prenom : "", pseudo : "", mdp : "", estCommercant : false };
+        mdpConfirm = "";
     }
 
-    function getIdUserByPseudo(pseudo) {
-        let users = JSON.parse(localStorage.getItem('users'));
-        let userId = null;
-
-        if (users) {
-            for (let id in users) {
-                if(users[id].pseudo == pseudo) {
-                    userId = id;
-                    break;
-                }
-            }
-        }
-
-        return userId
+    function toggleEstFormConnexion() {
+        estFormConnexion = !estFormConnexion;
     }
 
     function seConnecter(event) {
@@ -38,15 +27,14 @@
 
         event.preventDefault();
 
-        estConnecte = false; 
         let userId = getIdUserByPseudo(connexion.pseudo);
 
         if (userId) {
-            let users = JSON.parse(localStorage.getItem('users'));
+            let users = getUsers();
 
             // On a trouvé les données de l'utilisateur
             if (users[userId].mdp == sha256(connexion.mdp)) {
-                mdpErreur = "Yes!";
+                localStorage.setItem('IdUserConnecte', userId)
             } else {
                 mdpErreur = "Votre mot de passe est invalide";
             }
@@ -69,7 +57,7 @@
             let data = inscription;
             data.mdp = sha256(inscription.mdp);
 
-            let users = JSON.parse(localStorage.getItem('users'));
+            let users = getUsers();
             if (users) {
                 let nouveauIdentifiant = Math.max(...Object.keys(users).map(Number)) + 1
 
@@ -79,6 +67,9 @@
                 // On a jamais stocké un utilisateur, donc on commence par en créer une avec l'identifiant 0
                 localStorage.setItem("users", JSON.stringify({0 : data}));
             }
+
+            estFormConnexion = true;
+            clearInputInscription();
         }
     }
 </script>
