@@ -4,8 +4,6 @@
 
     import { getUserConnecte } from '$lib/scripts/User.js';
 
-    import ListerArticles from '$lib/components/listerArticles.svelte';
-    
     beforeUpdate(() => {
         let user = getUserConnecte();    
         if (!user || user.estCommercant) {
@@ -16,6 +14,5 @@
 </script>
 
 <main>
-    <h1 class="text-center">Bienvenue, que souhaitez-vous acheter ?</h1>
-    <ListerArticles texteQuantite="Quantité dans le panier" />
+
 </main>

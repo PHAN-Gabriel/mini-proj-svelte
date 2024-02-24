@@ -1,7 +1,11 @@
 <script>
+    import { goto } from '$app/navigation';
     import { sha256 } from 'js-sha256';
-    import Champ from './Champ.svelte';
-    import { getUsers, getIdUserByPseudo } from '$lib/Users.js';
+
+    import Champ from '$lib/components/Champ.svelte';
+    import { getUsers, getIdUserByPseudo, faireConnecter } from '$lib/scripts/User.js';
+
+    export let fn_redirection;
 
     let estFormConnexion = true;
     let inscription = { nom : "", prenom : "", pseudo : "", mdp : "", estCommercant : false };
@@ -34,7 +38,8 @@
 
             // On a trouvé les données de l'utilisateur
             if (users[userId].mdp == sha256(connexion.mdp)) {
-                localStorage.setItem('IdUserConnecte', userId)
+                faireConnecter(userId);
+                fn_redirection();
             } else {
                 mdpErreur = "Votre mot de passe est invalide";
             }

@@ -1,37 +1,31 @@
 <script>
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    
-    import { getUserConnecte } from '$lib/Users.js';
+    import Bouton from '$lib/components/Bouton.svelte';
 
-    import IconButton from '@smui/icon-button';
-    import AddIcon from 'svelte-icons/io/IoIosAddCircleOutline.svelte';
+    import { beforeUpdate } from 'svelte';
+    import { goto } from '$app/navigation';
+
+    import MdAddShoppingCart from 'svelte-icons/md/MdAddShoppingCart.svelte'
     
-    onMount(() => {
-        let user = getUserConnecte();
-        if (!user) {
+    import { getUserConnecte, getIdUserConnecte } from '$lib/scripts/User.js';
+    
+    import ListerArticles from '$lib/components/listerArticles.svelte';
+    
+    beforeUpdate(() => {
+        let user = getUserConnecte();    
+        if (!user || !user.estCommercant) {
+            // On doit être connecté et en tant que client pour accéder à cette page
             goto('/');
-        } else if (!user.estCommercant) {
-            goto('/acheterArticles');
         }
     });
-
-    let clicked = 0;
-    function handleClick() {
-        clicked += 1;
-    }
 </script>
 
 <main>
     <div>
-        <h1>Accueil commerçant</h1>
+        <h1 class="text-center">Gestion du stock</h1>
+        <ListerArticles idCommercantConcerne={ getIdUserConnecte() } texteQuantite="Quantité restante"/>
     </div>
-    <div>
-        <p>Vous avez cliqué {clicked} fois</p>
-    </div>
-    <div>
-        <IconButton class="bg-transparent" style="border: none;" on:click={handleClick}>
-            <AddIcon/>
-        </IconButton>
+
+    <div class="d-flex btn btn-secondary position-fixed bottom-0 end-0 m-5 p-0 border border-dark rounded-circle border-2" style="width: 4em; height: 4em;">
+        <Bouton Bouton={MdAddShoppingCart} onClick={() => goto('creerArticle')}/>
     </div>
 </main>
