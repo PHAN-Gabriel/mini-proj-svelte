@@ -26,6 +26,6 @@
     </div>
 
     <div class="d-flex btn btn-secondary position-fixed bottom-0 end-0 m-5 p-0 border border-dark rounded-circle border-2" style="width: 4em; height: 4em;">
-        <Bouton Bouton={MdAddShoppingCart} onClick={() => goto('creerArticle')}/>
+        <Bouton Bouton={MdAddShoppingCart} onClick={() => goto('addOrUpdateArticle')}/>
     </div>
 </main>

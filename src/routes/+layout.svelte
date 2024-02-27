@@ -12,6 +12,8 @@
 
 	let afficher = false;
 	afterUpdate(() => { afficher = estConnecte()});
+
+	let userConnecte = getUserConnecte();
 </script>
 
 <nav class="bg-secondary bg-gradient d-flex justify-content-between mb-2 border-bottom border-2 border-black" style="height: 3em">
@@ -21,8 +23,11 @@
 
 		<div class="d-flex">
 			{#if afficher}
-				{#if !getUserConnecte().estCommercant }
-					<Bouton Bouton={IoMdBasket} onClick={ () => goto('/gestionPanier') } />
+				{#if userConnecte != null}
+					<span class="d-flex align-items-center text-light me-3">Bonjour {userConnecte.nom + " " + userConnecte.prenom}</span>
+					{#if !userConnecte.estCommercant }
+						<Bouton Bouton={IoMdBasket} onClick={ () => goto('/gestionPanier') } />
+					{/if}
 				{/if}
 
 				<Bouton Bouton={IoIosLogOut} onClick={ logOut } />

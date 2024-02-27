@@ -29,10 +29,6 @@
         changerQuantite(id, quantite);
       }
     }
-
-    function getQuantite() {
-      return quantite;
-    }
   </script>
   
   <style>

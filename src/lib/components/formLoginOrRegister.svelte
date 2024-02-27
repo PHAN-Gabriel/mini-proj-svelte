@@ -1,7 +1,7 @@
 <script>
-    import { goto } from '$app/navigation';
     import { sha256 } from 'js-sha256';
 
+    import Form from '$lib/components/Form.svelte';
     import Champ from '$lib/components/Champ.svelte';
     import { getUsers, getIdUserByPseudo, faireConnecter } from '$lib/scripts/User.js';
 
@@ -86,27 +86,21 @@
 </style>
 
 {#if estFormConnexion}
-    <form on:submit={seConnecter} class="d-flex flex-column align-items-center">
-        <div class="border border-dark border-2 w-25 px-4 py-2" style="min-width: 20em">
-            <h1>Connexion</h1>
+    <Form titre="Connexion" fn_onsubmit={seConnecter}>
             <Champ label="Pseudonyme" bind:value={connexion.pseudo}  bind:erreur={connexionPseudoErreur}/>
             <Champ label="Mot de passe" type="password" bind:value={connexion.mdp}  bind:erreur={mdpErreur}/>
             <Champ label="Se connecter" type="submit" />
-        </div>
         <p>Pas encore inscrit ? <span class="text-primary text-decoration-underline cursor-pointer" on:click={toggleEstFormConnexion}>S'inscrire</span></p>
-    </form>
+    </Form>
 {:else}
-    <form on:submit={creerCompte} class="d-flex flex-column align-items-center">
-        <div class="border border-dark border-2 w-25 px-4 py-2" style="min-width: 20em">
-            <h1>Inscription</h1>
-            <Champ label="Nom" bind:value={inscription.nom} />
-            <Champ label="Prénom" bind:value={inscription.prenom} />
-            <Champ label="Pseudonyme" bind:value={inscription.pseudo} bind:erreur={inscriptionPseudoErreur} />
-            <Champ label="Mot de passe" type="password" bind:value={inscription.mdp} />
-            <Champ label="Confirmer le mot de passe"  type="password" bind:value={mdpConfirm} bind:erreur={mdpConfirmErreur} />
-            <Champ label="Est commerçant" type="checkbox" bind:value={inscription.estCommercant} />
-            <Champ label="S'inscrire" type="submit" />
-        </div>
+    <Form titre="Inscription" fn_onsubmit={creerCompte}>
+        <Champ label="Nom" bind:value={inscription.nom} />
+        <Champ label="Prénom" bind:value={inscription.prenom} />
+        <Champ label="Pseudonyme" bind:value={inscription.pseudo} bind:erreur={inscriptionPseudoErreur} />
+        <Champ label="Mot de passe" type="password" bind:value={inscription.mdp} />
+        <Champ label="Confirmer le mot de passe"  type="password" bind:value={mdpConfirm} bind:erreur={mdpConfirmErreur} />
+        <Champ label="Est commerçant" type="checkbox" bind:value={inscription.estCommercant} />
+        <Champ label="S'inscrire" type="submit" />
         <p>Déjà inscrit ? <span class="text-primary text-decoration-underline cursor-pointer" on:click={toggleEstFormConnexion}>Se connecter</span></p>
-    </form>
+    </Form>
 {/if}
