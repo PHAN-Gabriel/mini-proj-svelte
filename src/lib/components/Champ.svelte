@@ -1,9 +1,13 @@
 <script>
+    import { afterUpdate } from 'svelte';
+
     export let type = 'text';
     export let label = undefined;
     export let value = undefined;
     export let erreur = undefined;
     export let step = 1;
+    export let required = true;
+
     let labelDev = label.replaceAll(" ", "_").toLowerCase();
 
     let pos_div = "start";
@@ -11,6 +15,17 @@
         value = label;
         pos_div = "end";
     }
+
+    afterUpdate(() => {
+        let inputElement = document.getElementById(`input_${labelDev}`);
+        if (inputElement && type !== 'submit') {
+            if (required) {
+                inputElement.setAttribute('required', '');
+            } else {
+                inputElement.removeAttribute('required');
+            }
+        }
+    });
 
     function handleFileInputChange(event) {
         value = event.target.files[0];
@@ -40,9 +55,9 @@
         <input id="input_{labelDev}" name="{labelDev}" type="checkbox" bind:checked={value} class="ms-1">
     {:else if type == "file"}
         <label for={labelDev} class="me-1">{label} :</label>
-        <input id="input_{labelDev}" name="{labelDev}" type="file" class="form-control" on:change={handleFileInputChange} required>
+        <input id="input_{labelDev}" name="{labelDev}" type="file" class="form-control" on:change={handleFileInputChange}>
     {:else}
-        <input id="input_{labelDev}" name="{labelDev}" use:typeInput bind:value placeholder="{label}" required>
+        <input id="input_{labelDev}" name="{labelDev}" use:typeInput bind:value placeholder="{label}">
     {/if}
 </div>
 {#if erreur}

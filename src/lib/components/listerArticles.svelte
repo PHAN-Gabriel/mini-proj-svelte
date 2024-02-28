@@ -6,10 +6,11 @@
     export let texteQuantite;
 
     let modifierQuantiteStockage = idCommercantConcerne != null;
+    let editable = idCommercantConcerne != null;
 </script>
 
 <div class="d-flex flex-wrap justify-content-center">
     {#each Object.entries(getArticles(idCommercantConcerne)) as [idArticle, article]}
-        <Article id={idArticle} nom={article["nom"]} prix={article["prix"]} image={article["image"]} quantiteMax={article["quantite"]} modifierQuantiteStockage={modifierQuantiteStockage} texteQuantite={texteQuantite} />
+        <Article id={idArticle} nom={article["nom"]} prix={article["prix"]} image={article["image"]} quantiteMax={article["quantite"]} modifierQuantiteStockage={modifierQuantiteStockage} editable={editable} texteQuantite={texteQuantite} />
     {/each}
 </div>
