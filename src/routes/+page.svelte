@@ -20,4 +20,4 @@
     beforeUpdate(() => { definirLocalStorageAvecValeursDefaut(); faireRedirectionSelonConnexion(); });
 </script>
 
-<FormLoginOrRegister fn_redirection={faireRedirectionSelonConnexion}/>
+<FormLoginOrRegister fn_redirection={() => location.reload()}/>

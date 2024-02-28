@@ -16,6 +16,5 @@
 </script>
 
 <main>
-    <h1 class="text-center">Bienvenue, que souhaitez-vous acheter ?</h1>
-    <ListerArticles texteQuantite="Quantité dans le panier" />
+    <ListerArticles titre="Bienvenue, que souhaitez-vous acheter ?" texteQuantite="Quantité dans le panier" />
 </main>

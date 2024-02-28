@@ -14,5 +14,9 @@
 </script>
 
 <main>
-
+    {#each [] as color}
+        <p>color</p>
+    {:else}
+        <h2 class="text-center mt-5">Vous n'avez aucun article dans le panier</h2>
+	{/each} 
 </main>

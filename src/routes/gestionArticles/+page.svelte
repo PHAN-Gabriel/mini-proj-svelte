@@ -21,8 +21,7 @@
 
 <main>
     <div>
-        <h1 class="text-center">Gestion du stock</h1>
-        <ListerArticles idCommercantConcerne={ getIdUserConnecte() } texteQuantite="Quantité restante"/>
+        <ListerArticles titre="Gestion du stock" idCommercantConcerne={ getIdUserConnecte() } texteQuantite="Quantité restante"/>
     </div>
 
     <div class="d-flex btn btn-secondary position-fixed bottom-0 end-0 m-5 p-0 border border-dark rounded-circle border-2" style="width: 4em; height: 4em;">

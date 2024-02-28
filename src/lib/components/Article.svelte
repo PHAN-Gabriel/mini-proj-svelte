@@ -1,5 +1,5 @@
 <script>
-    import { changerQuantite, supprimerArticle } from '$lib/scripts/Article.js';
+    import { modifierQuantiteStockageArticle, supprimerArticle, modifierQuantitePanier, getQuantiteActuelArticle  } from '$lib/scripts/Article.js';
 
     import { goto } from '$app/navigation';
 
@@ -31,7 +31,9 @@
       }
 
       if(modifierQuantiteStockage) {
-        changerQuantite(id, quantite);
+        modifierQuantiteStockageArticle(id, quantite);
+      } else {
+        modifierQuantitePanier(id, quantite);
       }
     }
 
@@ -46,6 +48,10 @@
       } else {
         return;
       }
+    }
+
+    if (!modifierQuantiteStockage) {
+      quantite = getQuantiteActuelArticle(id);
     }
   </script>
   

@@ -1,4 +1,4 @@
-import { getUserConnecte, getIdUserConnecte } from '$lib/scripts/User.js';
+import { getUsers, getUserConnecte, getIdUserConnecte } from '$lib/scripts/User.js';
 
 export function getArticles(idCommercant=null) {
     try {
@@ -6,7 +6,6 @@ export function getArticles(idCommercant=null) {
         if (idCommercant == null) {
             return articles;
         } else {
-            console.log( Object.fromEntries(Object.entries(articles).filter(([key]) => articles[key].idCommercantAppartenance == idCommercant)));
             return Object.fromEntries(Object.entries(articles).filter(([key]) => articles[key].idCommercantAppartenance == idCommercant));
         }
     } catch(error) {
@@ -18,7 +17,38 @@ export function getArticle(idArticle) {
     return getArticles()[idArticle];
 }
 
-export function changerQuantite(idArticle, nouvelleQuantite) {
+export function modifierQuantitePanier(idArticle, quantite) {
+    let user = getUserConnecte();
+    let idUser = getIdUserConnecte();
+    let panier = user.panier;
+    if(!panier) {
+        panier = {}
+    }
+
+    panier[idArticle] = quantite;
+
+    user.panier = panier;
+
+    let users = getUsers()
+    users[idUser] = user;
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+export function getArticlesPanier(idClient) {
+    try {
+        let panier = JSON.parse(localStorage.getItem('users'))[idClient].panier;
+
+        if (!panier) {
+            return {};
+        }
+
+        return panier;
+    } catch(error) {
+        return {};
+    }
+}
+
+export function modifierQuantiteStockageArticle(idArticle, nouvelleQuantite) {
     let articles = getArticles();
 
     articles[idArticle].quantite = nouvelleQuantite;
@@ -98,4 +128,24 @@ export function supprimerArticle(idArticle) {
 
     delete articles[idArticle];
     localStorage.setItem('articles', JSON.stringify(articles));
+}
+
+export function getQuantiteActuelArticle(idArticle) {
+    try {
+        let qt_max = getArticle(idArticle).quantite
+        let qt = getUserConnecte().panier[idArticle];
+
+        if (qt == undefined) {
+            return 0;
+        }
+
+        if (qt > qt_max) {
+            qt = qt_max;
+            modifierQuantitePanier(idArticle, qt);
+        }
+
+        return qt;
+    } catch (error) {
+        return 0;
+    }
 }

@@ -18,7 +18,7 @@
 
     afterUpdate(() => {
         let inputElement = document.getElementById(`input_${labelDev}`);
-        if (inputElement && type !== 'submit') {
+        if (inputElement && type !== 'submit' && type !== 'checkbox') {
             if (required) {
                 inputElement.setAttribute('required', '');
             } else {

@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { afterUpdate } from 'svelte';
+	import { beforeUpdate } from 'svelte';
 
     import Bouton from '$lib/components/Bouton.svelte';
 	
@@ -11,7 +11,7 @@
     import { logOut, estConnecte, getUserConnecte } from '$lib/scripts/User.js';
 
 	let afficher = false;
-	afterUpdate(() => { afficher = estConnecte()});
+	beforeUpdate(() => { afficher = estConnecte()});
 
 	let userConnecte = getUserConnecte();
 </script>
