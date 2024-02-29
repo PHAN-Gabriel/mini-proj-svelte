@@ -1,38 +1,29 @@
-# create-svelte
+# Groupe
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Nous sommes un groupe composé de 3 membres :
+- LOYER Loreena
+- CONTOIS Jonathan
+- PHAN Gabriel
 
-## Creating a project
+## Sujet
 
-If you're seeing this, you've probably already done this step. Congrats!
+Notre sujet consiste à gérer des articles sur un site web avec Svelte :
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Nous aurons une page de connexion et 2 types d'utilisateurs :
+Le commerçant qui pourra ajouter des articles (nom, image, prix, quantité...) et d'augmenter la quantité des articles.
+Le client qui pourra consulter et ajouter des articles dans un panier (en précisant la quantité) et de valider son achat sur son panier.
+De plus, nous gérons le cas où le client souhaite acheter une quantitée plus élevée que le quantité maximale proposé (stock)
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
 
-## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Code connexion
 
-```bash
-npm run dev
+Vous pouvez retrouver ces comptes afin que vous puissiez voir les deux types de pages :
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+#### Le commerçant
+- Nom utilisateur : Commercant
+- Mot de passe : Commercant
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+#### Le client
+- Nom utilisateur : LeClient
+- Mot de passe : LeClient
