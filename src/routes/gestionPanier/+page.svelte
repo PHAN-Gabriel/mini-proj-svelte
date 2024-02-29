@@ -39,20 +39,29 @@
     }
 </script>
 
-<main>
-    <h1>Panier</h1>
-    <ul>
+<main class="d-flex align-content-center flex-wrap flex-column">
+    <h1 class="text-center">Panier</h1>
+    <ul class="list-unstyled">
         {#each Object.entries(panier) as [idArticle, articleEtQuantiteActuelle] (idArticle)}
-            <li idArticle={idArticle}>
-                <Bouton Bouton={MdDelete} largeur="2.25em" onClick={() => supprimerArticle(idArticle)}/>
-                <span>{articleEtQuantiteActuelle.article.nom}</span>
-                <span>Prix unitaire : { Number(articleEtQuantiteActuelle.article.prix).toFixed(2) }€</span>
-                <GestionQuantiteArticle idArticle={idArticle} bind:quantite={panier[idArticle].quantite} quantiteMax={articleEtQuantiteActuelle.article.quantite} modifierQuantiteStockage={false}/>
-                <span>Prix total : {Number(articleEtQuantiteActuelle.article.prix * panier[idArticle].quantite).toFixed(2) }€</span>
+            <li class="card m-3" idArticle={idArticle}>
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <h3 style="width: 7.5em;" class="text-center">{articleEtQuantiteActuelle.article.nom}</h3>
+                    <img style="width: 6.5em;" src="src/lib/img/Article/{articleEtQuantiteActuelle.article.image}" alt={"Image de " + articleEtQuantiteActuelle.article.nom}>
+                    <span style="width: 15em;" class="text-center">Prix unitaire : { Number(articleEtQuantiteActuelle.article.prix).toFixed(2) }€</span>
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Quantité :</span>
+                        <GestionQuantiteArticle idArticle={idArticle} bind:quantite={panier[idArticle].quantite} quantiteMax={articleEtQuantiteActuelle.article.quantite} modifierQuantiteStockage={false}/>
+                    </div>
+                    <span style="width: 15em;" class="text-center">Prix total : <span class="fw-bold">{Number(articleEtQuantiteActuelle.article.prix * panier[idArticle].quantite).toFixed(2) }€</span></span>
+                    <Bouton Bouton={MdDelete} largeur="4.25em" onClick={() => supprimerArticle(idArticle)} style={"color: red;"}/>
+                </div>
             </li>
         {/each}
     </ul>
+    
 
-    <p>Total: { Number(Object.values(panier).reduce((acc, item) => acc + (item.quantite * item.article.prix) , 0)).toFixed(2) }€</p>
-    <button class="btn btn-success" on:click={validerAchat}>Valider l'achat</button>
+    <div class="align-items-right d-flex justify-content-end">
+        <p>Total à payer : { Number(Object.values(panier).reduce((acc, item) => acc + (item.quantite * item.article.prix) , 0)).toFixed(2) }€</p>
+        <button class="btn btn-success mx-5" on:click={validerAchat}>Valider l'achat</button>
+    </div>
 </main>
