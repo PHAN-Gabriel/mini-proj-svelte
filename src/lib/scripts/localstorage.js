@@ -29,6 +29,7 @@ export function definirLocalStorageAvecValeursDefaut() {
 
         ajouterArticle("Orange", 0.50, 5, "orange.jpg", 0);
         ajouterArticle("Pomme", 1, 4, "pomme.jpg", 0);
+        ajouterArticle("Poire", 2, 0, "poire.jpg", 0);
         ajouterArticle("Banane", 1.50, 7, "banane.jpg", 1);
 
         localStorage.setItem("users", JSON.stringify(users));

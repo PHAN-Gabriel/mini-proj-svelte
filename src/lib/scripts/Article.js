@@ -34,15 +34,37 @@ export function modifierQuantitePanier(idArticle, quantite) {
     localStorage.setItem('users', JSON.stringify(users));
 }
 
+export function viderPanier() {
+    let user = getUserConnecte();
+    let idUser = getIdUserConnecte();
+    let panier = {};
+
+    user.panier = panier;
+    
+    let users = getUsers()
+    users[idUser] = user;
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
 export function getArticlesPanier(idClient) {
     try {
         let panier = JSON.parse(localStorage.getItem('users'))[idClient].panier;
-
         if (!panier) {
             return {};
         }
+        
+        let listeArticleEtQuantite = {};
 
-        return panier;
+        for (let idArticle in panier) {
+            let quantite = panier[idArticle];
+            let article = getArticle(idArticle);
+
+            if (quantite > 0) {
+                listeArticleEtQuantite[idArticle] = {article: article, quantite: quantite};
+            }
+        }
+
+        return listeArticleEtQuantite;
     } catch(error) {
         return {};
     }
@@ -54,6 +76,10 @@ export function modifierQuantiteStockageArticle(idArticle, nouvelleQuantite) {
     articles[idArticle].quantite = nouvelleQuantite;
 
     localStorage.setItem('articles', JSON.stringify(articles));
+}
+
+export function ajouterQuantiteStockageArticle(idArticle, nbQuantite) {
+    modifierQuantiteStockageArticle(idArticle, getArticle(idArticle).quantite + nbQuantite);
 }
 
 export function ajouterArticle(nom, prix, quantite, nom_fichier_image, idCommercant=null) {
@@ -130,7 +156,7 @@ export function supprimerArticle(idArticle) {
     localStorage.setItem('articles', JSON.stringify(articles));
 }
 
-export function getQuantiteActuelArticle(idArticle) {
+export function getQuantiteActuelleArticle(idArticle) {
     try {
         let qt_max = getArticle(idArticle).quantite
         let qt = getUserConnecte().panier[idArticle];

@@ -2,9 +2,13 @@
     import { beforeUpdate } from 'svelte';
     import { goto } from '$app/navigation';
 
-    import { getUserConnecte, estConnecte} from '$lib/scripts/User.js';
-    import { getArticlesPanier, modifierQuantitePanier } from '$lib/scripts/Article.js';
-    import { getArticle } from '$lib/scripts/Article.js';
+    import MdDelete from 'svelte-icons/md/MdDelete.svelte'
+    
+    import Bouton from '$lib/components/Bouton.svelte';
+    import GestionQuantiteArticle from '$lib/components/GestionQuantiteArticle.svelte';
+
+    import { getUserConnecte, getIdUserConnecte } from '$lib/scripts/User.js';
+    import { getArticlesPanier, modifierQuantitePanier, ajouterQuantiteStockageArticle, viderPanier } from '$lib/scripts/Article.js';
 
     beforeUpdate(() => {
         let user = getUserConnecte();    
@@ -14,74 +18,41 @@
         }
     });
 
-    let panier = {};
-    let total = 0;
-
-    // Initialisation du panier et du total lors du chargement de la page
-    function initialiserPanier() {
-        panier = getArticlesPanier(getUserConnecte().id);
-        recalculerTotal();
-    }
-
-    // Recalculer le total du panier
-    function recalculerTotal() {
-        total = Object.entries(panier).reduce((acc, [idArticle, quantite]) => {
-            let article = getArticle(idArticle);
-            return acc + (article.prix * quantite);
-        }, 0);
-    }
-
-    // Modifier la quantité d'un article dans le panier
-    function modifierQuantite(idArticle, nouvelleQuantite) {
-        if (nouvelleQuantite < 0) {
-            nouvelleQuantite = 0; // Assure que la quantité ne devient pas négative
-        }
-        panier[idArticle] = nouvelleQuantite;
-        modifierQuantitePanier(getUserConnecte().id, panier); // Mettre à jour la quantité dans le panier
-        recalculerTotal();
-    }
+    let panier = getArticlesPanier(getIdUserConnecte());
 
     // Supprimer un article du panier
     function supprimerArticle(idArticle) {
-        delete panier[idArticle];
-        modifierQuantitePanier(getUserConnecte().id, panier); // Mettre à jour le panier après la suppression
-        recalculerTotal();
+        document.querySelector('li[idArticle="' + idArticle + '"]').remove();
+        panier[idArticle].quantite = 0;
+        modifierQuantitePanier(idArticle, 0);
     }
-
+    
     function validerAchat() {
-        alert("Achat validé !");
-        panier = {};
-        recalculerTotal();
+        let obj_panier = Object.entries(panier)
+        for (const i in obj_panier) {
+            let [idArticle, articleEtQuantiteActuelle] = obj_panier[i];
+            ajouterQuantiteStockageArticle(idArticle, -articleEtQuantiteActuelle.quantite)
+        }
+        viderPanier();
+        goto('/');
+        alert('Achat validé');
     }
-
-    initialiserPanier();
 </script>
 
-<!-- <main>
-    {#each [] as color}
-        <p>color</p>
-    {:else}
-        <h2 class="text-center mt-5">Vous n'avez aucun article dans le panier</h2>
-	{/each} 
-</main> -->
-
 <main>
-    {#if !estConnecte()}
-        <p>Veuillez vous connecter pour accéder à votre panier.</p>
-    {:else}
-        <h1>Panier</h1>
-        <ul>
-            {#each Object.entries(panier) as [idArticle, quantite]}
-                {#if getArticle(idArticle)}
-                    <li>
-                        <span>{getArticle(idArticle).nom} - Quantité: {quantite}</span>
-                        <button on:click={() => modifierQuantite(idArticle, quantite - 1)}>-</button>
-                        <button on:click={() => supprimerArticle(idArticle)}>Supprimer</button>
-                    </li>
-                {/if}
-            {/each}
-        </ul>
-        <p>Total: {total}€</p>
-        <button on:click={validerAchat}>Valider l'achat</button>
-    {/if}
+    <h1>Panier</h1>
+    <ul>
+        {#each Object.entries(panier) as [idArticle, articleEtQuantiteActuelle] (idArticle)}
+            <li idArticle={idArticle}>
+                <Bouton Bouton={MdDelete} largeur="2.25em" onClick={() => supprimerArticle(idArticle)}/>
+                <span>{articleEtQuantiteActuelle.article.nom}</span>
+                <span>Prix unitaire : { Number(articleEtQuantiteActuelle.article.prix).toFixed(2) }€</span>
+                <GestionQuantiteArticle idArticle={idArticle} bind:quantite={panier[idArticle].quantite} quantiteMax={articleEtQuantiteActuelle.article.quantite} modifierQuantiteStockage={false}/>
+                <span>Prix total : {Number(articleEtQuantiteActuelle.article.prix * panier[idArticle].quantite).toFixed(2) }€</span>
+            </li>
+        {/each}
+    </ul>
+
+    <p>Total: { Number(Object.values(panier).reduce((acc, item) => acc + (item.quantite * item.article.prix) , 0)).toFixed(2) }€</p>
+    <button class="btn btn-success" on:click={validerAchat}>Valider l'achat</button>
 </main>
