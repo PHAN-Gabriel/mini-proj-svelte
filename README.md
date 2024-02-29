@@ -5,6 +5,11 @@ Nous sommes un groupe composé de 3 membres :
 - CONTOIS Jonathan
 - PHAN Gabriel
 
+## Lancer l'application :
+- D'abord, vous devez installer les packages : ``npm install``
+- Voici la commande pour executer l'application : ``npm run dev -- --open``
+
+
 ## Sujet
 
 Notre sujet consiste à gérer des articles sur un site web avec Svelte :
